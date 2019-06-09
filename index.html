@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    canvas {
+        display: block;
+        margin: 0 auto;
+		border: 1px solid red;
+    }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="360" height="512"></canvas>
+    <script type="text/javascript" src="js/Pipe.js"></script>
+	<script type="text/javascript" src="js/Game.js"></script>
+	<script type="text/javascript" src="js/Bird.js"></script>
+	<script type="text/javascript" src="js/BackGround.js"></script>
+    <script>
+    var imgArr = ["images/bg_day.png", "images/bird0_0.png", "images/bird0_1.png", "images/bird0_2.png", "images/land.png", "images/pipe_down.png", "images/pipe_up.png"];
+        
+    loadImage(imgArr,function(img) {
+            // console.log(img);
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        // 初始化bird
+		var bird = new Bird(img.slice(1, 4), 100, 100);
+		// 初始化pipe
+		var pipe = new Pipe(img[5], img[6], 4, 360);
+		// 初始化land
+		var land = new BackGround(img[4], 4, 0, 400);
+		// 初始化mountain
+		var mountain = new BackGround(img[0], 2, 0, 0);
+
+		// 开始游戏
+		window.g = new Game(ctx, bird, pipe, land, mountain);
+    })
+
+    function loadImage(imgArr,callBack) {
+        var idx = 0;
+        var loadImageArr = [];
+        imgArr.forEach(function(value,index){
+            var img = new Image();
+            img.src = value;
+            img.onload = function() {
+                idx++;
+                loadImageArr[index] = this;
+                if(imgArr.length === idx){
+                    callBack(loadImageArr);
+                }
+            }
+        })
+    }
+
+    // var date = new Date();
+    // var i = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds();
+    </script>
+</body>
+</html>
